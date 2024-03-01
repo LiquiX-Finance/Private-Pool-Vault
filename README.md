@@ -1,6 +1,10 @@
 ![Logo](https://liquix.s3.ap-northeast-1.amazonaws.com/Title-Logo.png)
 
 # LiquiX
+#### [Official website https://liquix.finance](https://liquix.finance/)
+#### [tyler@liquix.finance](mailto:tyler@liquix.finance)
+
+<BR>
 
 ### Global Liquidity Made Easy
 
