@@ -4,10 +4,12 @@ pragma solidity ^0.8.20;
 import "./libs/TransferHelper.sol";
 import "./libs/RewardStructInfo.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import {VaultStructInfo} from "./libs/VaultStructInfo.sol";
 
 contract RewardTracker is Ownable {
     using RewardStructInfo for RewardStructInfo.TokenRewardInfo;
     using RewardStructInfo for RewardStructInfo.RewardWarp;
+    using VaultStructInfo for VaultStructInfo.BlastInfo;
 
     address public rewardContractAddress;
     address[] public allowedTokenList;
@@ -20,6 +22,7 @@ contract RewardTracker is Ownable {
     uint256 public offset;
     uint256 public calculateInterval;
     uint256 public maxClaimRound;
+    VaultStructInfo.BlastInfo private blastInfo;
 
     function initialize() external onlyOwner {
         bonusRate = 30000;
@@ -27,6 +30,7 @@ contract RewardTracker is Ownable {
         calculateInterval = 3 days;
         //Max Profit Accumulate: 3 years
         maxClaimRound = 365;
+        blastInfo.initBlastInfo();
     }
 
     modifier allowTokenCheck(address token) {

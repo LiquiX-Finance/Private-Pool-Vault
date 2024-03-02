@@ -73,3 +73,5 @@ On different chains, we use various protocols to automatically help users genera
 ####  Audit Report
 ***
 > https://github.com/LiquiX-Finance/Private-Pool-Vault/blob/main/SlowMist%20Audit%20Report%20-%20LiquiX.pdf
+
+All medium and severe vulnerabilities have been fixed. The vulnerabilities were transaction-related, and the funds in your private Vault are 100% safe.

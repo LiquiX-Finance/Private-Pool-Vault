@@ -13,7 +13,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
-import "@uniswap/swap-router-contracts/contracts/interfaces/IV3SwapRouter.sol";
 import "./libs/AaveHelper.sol";
 
 contract Vault is IERC721Receiver, Ownable, ReentrancyGuard {
@@ -72,18 +71,22 @@ contract Vault is IERC721Receiver, Ownable, ReentrancyGuard {
     /*
     * Swap
     */
+    /*
     function swapInputETHForToken(address tokenOut, uint24 fee, uint256 amountIn, uint256 amountOutMin) external dispatcherCheck allowListCheck(tokenOut) returns (uint256 amountOut) {
         amountOut = SwapHelper.swapInputETHForToken(tokenOut, fee, amountIn, amountOutMin, uniInfo.swapRouter, uniInfo.WETH);
         return tradingInfo.collectTradingFee(amountOut, tradingInfo.swapTradingFeeRate, tokenOut);
     }
+    */
+
+    /*
+    function swapInputTokenToETH(address tokenIn, uint24 fee, uint256 amountIn, uint256 amountOutMin) external dispatcherCheck returns (uint256) {
+        return SwapHelper.swapInputTokenToETH(tokenIn, fee, amountIn, amountOutMin, uniInfo.swapRouter, uniInfo.WETH, approveInfo.swapApproveMap);
+    }
+    */
 
     function swapInputForErc20Token(address tokenIn, address tokenOut, uint24 fee, uint256 amountIn, uint256 amountOutMin) external dispatcherCheck allowListCheck(tokenOut) returns (uint256 amountOut) {
         amountOut = SwapHelper.swapInputForErc20Token(tokenIn, tokenOut, fee, amountIn, amountOutMin, uniInfo.swapRouter, approveInfo.swapApproveMap);
         return tradingInfo.collectTradingFee(amountOut, tradingInfo.swapTradingFeeRate, tokenOut);
-    }
-
-    function swapInputTokenToETH(address tokenIn, uint24 fee, uint256 amountIn, uint256 amountOutMin) external dispatcherCheck returns (uint256) {
-        return SwapHelper.swapInputTokenToETH(tokenIn, fee, amountIn, amountOutMin, uniInfo.swapRouter, uniInfo.WETH, approveInfo.swapApproveMap);
     }
 
     /*
@@ -260,7 +263,12 @@ contract Vault is IERC721Receiver, Ownable, ReentrancyGuard {
     }
 
     function withdrawTokens(address token, uint256 amount) external onlyOwner {
-        TransferHelper.safeTransfer(token, msg.sender, amount);
+        if(token == uniInfo.WETH) {
+            IWETH(uniInfo.WETH).withdraw(amount);
+            TransferHelper.safeTransferETH(msg.sender, amount);
+        } else {
+            TransferHelper.safeTransfer(token, msg.sender, amount);
+        }
     }
 
     function withdrawETH(uint256 amount) external onlyOwner {

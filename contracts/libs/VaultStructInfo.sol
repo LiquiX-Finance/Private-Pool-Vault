@@ -3,9 +3,9 @@ pragma solidity ^0.8.20;
 pragma abicoder v2;
 
 import "./TransferHelper.sol";
-import "../interfaces/ISwapRouter02.sol";
 import "../interfaces/INonfungiblePositionManager.sol";
 import "../interfaces/IRewardTracker.sol";
+import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
     enum YieldMode {
         AUTOMATIC,
@@ -66,10 +66,10 @@ library VaultStructInfo {
     function initBlastInfo(BlastInfo storage blastInfo) internal {
         if (!blastInfo.isInited) {
             blastInfo.isInited = true;
-            blastInfo.USDB_Blast = IERC20Rebasing(0x4200000000000000000000000000000000000022);
-            blastInfo.WETH_Blast = IERC20Rebasing(0x4200000000000000000000000000000000000023);
+            blastInfo.USDB_Blast = IERC20Rebasing(0x4300000000000000000000000000000000000003);
+            blastInfo.WETH_Blast = IERC20Rebasing(0x4300000000000000000000000000000000000004);
             blastInfo.BLAST = IBlast(0x4300000000000000000000000000000000000002);
-            blastInfo.BLAST_POINT = IBlastPoints(0x2fc95838c71e76ec69ff817983BFf17c710F34E0);
+            blastInfo.BLAST_POINT = IBlastPoints(0x2536FE9ab3F511540F2f9e2eC2A805005C3Dd800);
             blastInfo.BLAST_POINT.configurePointsOperator(msg.sender);
             blastInfo.BLAST.configureClaimableGas();
             blastInfo.BLAST.configureAutomaticYield();
@@ -120,14 +120,14 @@ library VaultStructInfo {
     */
     struct UniInfo {
         address WETH;
-        ISwapRouter02 swapRouter;
+        ISwapRouter swapRouter;
         INonfungiblePositionManager nonfungiblePositionManager;
     }
 
     function initUniInfo(UniInfo storage uniInfo) internal {
-        uniInfo.WETH = 0x4200000000000000000000000000000000000023;
-        uniInfo.nonfungiblePositionManager = INonfungiblePositionManager(0x46Eb7Cff688ea0defCB75056ca209d7A2039fDa8);
-        uniInfo.swapRouter = ISwapRouter02(0xE4690BD7A9cFc681A209443BCE31aB943F9a9459);
+        uniInfo.WETH = 0x4300000000000000000000000000000000000004;
+        uniInfo.nonfungiblePositionManager = INonfungiblePositionManager(0x434575EaEa081b735C985FA9bf63CD7b87e227F9);
+        uniInfo.swapRouter = ISwapRouter(0x337827814155ECBf24D20231fCA4444F530C0555);
     }
 
 
@@ -155,7 +155,7 @@ library VaultStructInfo {
         tradingInfo.lpTradingFeeRate = 10;
         tradingInfo.aaveFeeRate = 10;
         tradingInfo.sendTradingFeeInterval = 1;
-        tradingInfo.rewardTracker = IRewardTracker(0x26053C592a73589406d2B55d88E3b2421aA78528);
+        tradingInfo.rewardTracker = IRewardTracker(0xb8C9f8Eef9324eE5E1ad713dBD27A82a37BC0e00);
     }
 
     function collectTradingFee(TradingInfo storage tradingInfo, uint256 amount, uint16 feeRate, address token) internal returns (uint256) {
